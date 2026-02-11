@@ -2,7 +2,8 @@
 *.pyc
 .vscode/
 __pycache__/
-
+.venv
 .env.dev
 .env.prod
 .env.test
+
