@@ -40,7 +40,7 @@ async def get_weather(city: str) -> str:
 agent = AssistantAgent(
     name="weather_agent",
     model_client=model_client,
-    system_message="You are a helpful assistant.",
+    system_message="You are a helpful assistant. You do concise answers not exceeding 2 lines",
     model_client_stream=True,  # Enable streaming tokens from the model client.
 )
 
