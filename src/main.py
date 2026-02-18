@@ -1,5 +1,8 @@
+import asyncio
+import Llama
+
 def main():
     print("Hello World !")
 
 if __name__ == "__main__":
-    main()
+    asyncio.run(Llama.main())
