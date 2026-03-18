@@ -1,8 +1,9 @@
-import asyncio
-import Llama
+# import asyncio
+# import Llama
+from api import api
 
-def main():
-    print("Hello World !")
+# def main():
+#     print("Hello World !")
 
 if __name__ == "__main__":
-    asyncio.run(Llama.main())
+    api.main()
