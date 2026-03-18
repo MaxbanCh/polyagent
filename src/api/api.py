@@ -72,6 +72,7 @@ async def github_webhook(
         "repo": repo,
         "branch": branch,
         "commits": commits,
+        "html_url": data["repository"]["html_url"],
     }
 
 def main():
