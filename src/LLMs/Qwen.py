@@ -92,7 +92,7 @@ async def get_github_contents(owner: str, repo: str, path: str = "", branch: str
 # Define an AssistantAgent with the model, tool, system message, and reflection enabled.
 # The system message instructs the agent via natural language.
 agent = AssistantAgent(
-    name="GitAgent",
+    name="git_fetcher",
     model_client=model_client,
     tools=[get_github_commits, get_github_contents],
     system_message="You are an expert programmer with high comprehension. Your goal is to be the most precise and concise possible.",
