@@ -153,11 +153,9 @@ selector_prompt = f"""You must select the next speaker following this strict wor
 
 1. Select 'git_fetcher' if:
    - No tool has been called yet (it always goes first), OR
-   - git_fetcher called get_branch_overview but has NOT yet called get_file_diff for the relevant files.
-   git_fetcher is DONE only when it has called both get_branch_overview AND at least one get_file_diff.
-
+   - git_fetcher called get_branch_overview.
 2. Select 'reviewer' if:
-   - git_fetcher has completed both phases (overview + file diffs) AND reviewer has not yet spoken.
+   - git_fetcher has completed both phases (overview + file diffs if provided) AND reviewer has not yet spoken.
 
 3. Select 'summary_writer' if:
    - reviewer has already provided its feedback.
