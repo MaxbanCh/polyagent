@@ -152,7 +152,7 @@ writer_agent = AssistantAgent(
 selector_prompt = f"""You must select the next speaker following this strict workflow:
 
 1. Select 'git_fetcher' if:
-   - No tool has been called yet (it always goes first), OR
+   - No tool has been called yet (it always goes first)
    - git_fetcher called get_branch_overview.
 2. Select 'reviewer' if:
    - git_fetcher has completed both phases (overview + file diffs if provided) AND reviewer has not yet spoken.
