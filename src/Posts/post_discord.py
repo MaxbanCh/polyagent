@@ -59,44 +59,6 @@ async def get_github_contents(owner: str, repo: str, path: str = "", branch: str
             return f"File: {data['name']}, Size: {data['size']} bytes"
 
 
-# FAKE TOOL: Simulates the complete output from GitAgent
-async def get_git_agent_output(request: str = "fetch") -> str:
-    """
-    Fake tool that returns the exact output from GitAgent without making any calls.
-    
-    Returns:
-        The formatted git merge summary from GitAgent
-    """
-    return """Merging `dev` into `main` for the DaMS4-Festival repository by Byxis includes the following changes:
-
-    - **Revert: API URL Handling and Remove `.env.example`**
-    - Replaces usage of `process.env.BACKEND_URL` with a hardcoded API URL in `environment.ts`.
-    - Removes the `.env.example` file.
-    - Adds a `config.json` with the API URL.
-    - Updates `GameForm` to use `environment.apiUrl`.
-    - Simplifies environment configuration and standardizes API URL usage across the frontend.
-
-    - **Feature: Add `env_file` to Frontend Service in Prod Compose**
-    - The frontend service in `docker-compose.prod.yml` now loads environment variables from the `.env` file.
-
-    - **Feature: Add `BACKEND_URL` to Env Files and Update Frontend Usage**
-    - Introduces `BACKEND_URL` to `.env.example` files for both backend and frontend.
-    - Updates frontend code to use the environment variable instead of hardcoded URLs.
-    - Improves configuration flexibility and centralizes API endpoint management.
-
-    - **Fix: Improve Auth Initialization and Logout Handling**
-    - Adds `isInitialized` signal to `AuthService` and uses it in `app.html` to delay rendering until auth state is known.
-    - Refactors logout to return an observable and updates header and interceptor to handle navigation after logout.
-    - Ensures user is redirected to login after failed refresh or logout.
-
-    - **Feature: Add Editor Role and Update Authorization Logic**
-    - Introduces a new 'editor' role and middleware to support it.
-    - Updates backend routes to allow both admin and editor roles for all data modification endpoints.
-    - Frontend now conditionally displays edit/create UI elements based on user role (admin or editor)."""
-
-
-
-
 
 # Define an AssistantAgent with the model, tool, system message, and reflection enabled.
 # The system message instructs the agent via natural language.
