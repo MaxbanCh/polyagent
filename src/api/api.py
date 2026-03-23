@@ -6,6 +6,7 @@ from typing import Optional
 import hmac
 import hashlib
 import os
+import Prompts.Qwen as Qwen
 
 app = FastAPI()
 
@@ -47,14 +48,10 @@ async def github_webhook(
 ):
     payload = await request.body()
 
-    # Verify the signature (optional but recommended)
     if x_hub_signature_256:
         if not verify_github_signature(payload, x_hub_signature_256):
             raise HTTPException(status_code=401, detail="Invalid signature")
 
-    # # Only handle push events
-    # if x_github_event != "push":
-    #     return {"message": f"Event '{x_github_event}' ignored"}
 
     data = await request.json()
 
@@ -65,6 +62,21 @@ async def github_webhook(
     commits = [c["id"] for c in data.get("commits", [])]
 
     print(f"Push by {user} on {repo}/{branch} — commits: {commits}")
+
+    if (branch != "main"):
+        print("Not main branch, skipping.")
+        return {"status": "ignored"}
+
+    infos = {
+        "owner": owner,
+        "user": user,
+        "repo": repo,
+        "branch": branch,
+        "commits": commits,
+        "html_url": data["repository"]["html_url"],
+    }
+
+    result = await Qwen.process_agent(infos)
 
     return {
         "owner": owner,
