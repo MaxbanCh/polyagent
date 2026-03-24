@@ -176,7 +176,12 @@ team = SelectorGroupChat(
 
 
 # Run the agent and stream the messages to the console.
-async def main() -> None:
+async def process_agent(infos: dict) -> None:
+    owner = infos["owner"]
+    repo = infos["repo"]
+    branch = infos["branch"]
+    url = infos["html_url"]
+
     task = "Create a complete overall message of feat/hitbox merging into dev, of the repository Ruzzle by Byxis"
     await Console(team.run_stream(task=task))
     # Close the connection to the model client.
@@ -184,4 +189,4 @@ async def main() -> None:
 
 
 if __name__ == "__main__":
-    asyncio.run(main())
+    asyncio.run(process_agent())

@@ -1,4 +1,8 @@
 autogen-agentchat
 autogen-ext[openai,azure]
 python-dotenv
+fastapi
+pydantic
+uvicorn
 httpx
+discord.py
