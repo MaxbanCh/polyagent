@@ -176,17 +176,28 @@ team = SelectorGroupChat(
 
 
 # Run the agent and stream the messages to the console.
-async def process_agent(infos: dict) -> None:
+async def process_agent(infos: dict) -> str:
     owner = infos["owner"]
     repo = infos["repo"]
     branch = infos["branch"]
     url = infos["html_url"]
 
     task = "Create a complete overall message of feat/hitbox merging into dev, of the repository Ruzzle by Byxis"
-    await Console(team.run_stream(task=task))
+    result = await team.run(task=task)
+
+    last_message = result.messages[-1].content if result.messages else ""
     # Close the connection to the model client.
     await model_client.close()
+    return last_message
 
 
 if __name__ == "__main__":
-    asyncio.run(process_agent())
+    infos = {
+        "owner": "Byxis",
+        "repo": "Ruzzle",
+        "branch": "dev",
+        "html_url": "https://github.com/Byxis/Ruzzle"
+    }
+    summary = asyncio.run(process_agent(infos))
+
+    print(f"Summary from writer_agent:\n{summary}")

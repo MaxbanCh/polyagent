@@ -2,6 +2,8 @@ from autogen_agentchat.agents import AssistantAgent
 from autogen_agentchat.ui import Console
 from autogen_ext.models.openai import OpenAIChatCompletionClient
 from dotenv import load_dotenv
+from src.api.discord_api import send_message
+from src.Prompts.Qwen import process_agent
 import asyncio
 import os
 import httpx
@@ -71,6 +73,15 @@ agent = AssistantAgent(
     model_client_stream=True,  # Enable streaming tokens from the model client.
 )
 
+async def get_git_agent_output() -> str:
+    """Fetch the summary from the Qwen git agent."""
+    infos = {
+        "owner": "Byxis",
+        "repo": "Ruzzle",
+        "branch": "dev",
+        "html_url": "https://github.com/Byxis/Ruzzle"
+    }
+    return await process_agent(infos)
 
 discord_agent = AssistantAgent(
     name="DiscordAgent",
@@ -97,7 +108,20 @@ discord_agent = AssistantAgent(
 
 # Run the agent and stream the messages to the console.
 async def main() -> None:
-    await Console(discord_agent.run_stream(task="Call get_git_agent_output and use its result to write a Discord post for my server, explaining the changes simply."))
+    git_summary = await get_git_agent_output()
+    print("Git summary retrieved:\n", git_summary)
+    #format the text
+    task = f"Format this git summary into a Discord post:\n\n{git_summary}"
+    result = await discord_agent.run(task=task)
+    
+    
+    # Step 3: Send to Discord
+    discord_formatted = result.messages[-1].content if result.messages else git_summary
+    await send_message(
+        message=discord_formatted,
+        channel_id=1481232603288698960
+    )
+
     # Close the connection to the model client.
     await model_client.close()
 

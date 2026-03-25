@@ -23,7 +23,7 @@ class DiscordClient(discord.Client):
             print(f"Channel with ID {channel_id} not found.")
 
 
-async def send_message(message: str = "Test polyagent message", channel_id: int = 1481232603288698960):
+async def send_message(message: str = "## I think it's \n # Crystal Clear now ;) ", channel_id: int = 1481232603288698960):
     intents = discord.Intents.default()
     intents.message_content = True
 
