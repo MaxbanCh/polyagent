@@ -1,3 +1,5 @@
+import json
+
 from fastapi import FastAPI, Request, Header, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
@@ -7,7 +9,7 @@ import hmac
 import hashlib
 import os
 import Prompts.Qwen as Qwen
-
+import Posts.post_discord as post_disco
 app = FastAPI()
 
 app.add_middleware(
@@ -76,7 +78,18 @@ async def github_webhook(
         "html_url": data["repository"]["html_url"],
     }
 
+    # Load the relation between git and discord
+    with open('api/relation_git_discord.json', 'r') as f:
+        git_discord_map = json.load(f)
+    
+    discord_id = git_discord_map.get(repo, "No Discord channel found")
+    if (discord_id == "No Discord channel found"):
+        return "error"
+    
+    discord_id = int(discord_id)
     result = await Qwen.process_agent(infos)
+    await post_disco.posting_to_discord_from_text(summary= result, repo = discord_id)
+
 
     return {
         "owner": owner,

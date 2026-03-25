@@ -2,8 +2,8 @@ from autogen_agentchat.agents import AssistantAgent
 from autogen_agentchat.ui import Console
 from autogen_ext.models.openai import OpenAIChatCompletionClient
 from dotenv import load_dotenv
-from src.api.discord_api import send_message
-from src.Prompts.Qwen import process_agent
+from api.discord_api import send_message
+from Prompts.Qwen import process_agent
 import asyncio
 import os
 import httpx
@@ -106,25 +106,19 @@ discord_agent = AssistantAgent(
 )
 
 
-# Run the agent and stream the messages to the console.
-async def main() -> None:
-    git_summary = await get_git_agent_output()
-    print("Git summary retrieved:\n", git_summary)
-    #format the text
-    task = f"Format this git summary into a Discord post:\n\n{git_summary}"
+async def posting_to_discord_from_text(summary : str, repo : int) -> bool:
+       #format the text
+    task = f"Format this git summary into a Discord post:\n\n{summary}"
     result = await discord_agent.run(task=task)
     
     
     # Step 3: Send to Discord
-    discord_formatted = result.messages[-1].content if result.messages else git_summary
+    discord_formatted = result.messages[-1].content if result.messages else summary
     await send_message(
         message=discord_formatted,
-        channel_id=1481232603288698960
+        #=channel_id=1481232603288698960
+        channel_id=repo
     )
 
-    # Close the connection to the model client.
-    await model_client.close()
+    return True
 
-
-if __name__ == "__main__":
-    asyncio.run(main())

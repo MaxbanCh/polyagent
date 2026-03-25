@@ -7,4 +7,4 @@ import Posts.post_discord as post_disco
 
 if __name__ == "__main__":
     # api.main()
-    asyncio.run(post_disco)
+    asyncio.run(api.main())
