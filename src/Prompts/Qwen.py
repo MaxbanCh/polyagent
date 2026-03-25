@@ -182,7 +182,7 @@ async def process_agent(infos: dict) -> str:
     branch = infos["branch"]
     url = infos["html_url"]
 
-    task = "Create a complete overall message of feat/hitbox merging into dev, of the repository Ruzzle by Byxis"
+    task = f"""Create a complete overall message of {branch} merging into dev, of the repository {repo} by {owner}"""
     result = await team.run(task=task)
 
     last_message = result.messages[-1].content if result.messages else ""
